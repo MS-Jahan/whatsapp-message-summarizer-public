@@ -1,0 +1,10 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+*.db
+/config/users.yaml
+.superpowers/
+users.yaml
+
+venv/

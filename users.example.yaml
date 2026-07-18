@@ -1,0 +1,12 @@
+# Copy to ./config/users.yaml. One entry per WhatsApp account to scan.
+# 'phone' is the WhatsApp number with country code, no + and no @s.whatsapp.net.
+users:
+  - phone: "8801700000001"
+    mail_to: "contact.sabit24@gmail.com"
+
+  # Optional per-user overrides:
+  # - phone: "8801700000006"
+  #   mail_to: "someone@example.com"
+  #   scan_hour: 23
+  #   gemini_primary_model: "gemini-2.5-pro"
+  #   gemini_fallback_model: "gemini-2.5-flash"

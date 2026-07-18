@@ -1,0 +1,12 @@
+services:
+  summarizer:
+    build: .
+    image: whatsapp-summarizer:latest
+    restart: "no"            # run-to-completion; Coolify cron invokes it
+    env_file: .env
+    volumes:
+      - ./config:/config     # holds users.yaml (edit over SSH / Coolify terminal)
+      - summarizer-data:/data # SQLite state, persists across runs
+
+volumes:
+  summarizer-data:

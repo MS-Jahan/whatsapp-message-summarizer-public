@@ -1,0 +1,17 @@
+services:
+  summarizer:
+    build: .
+    image: whatsapp-summarizer:latest
+    restart: unless-stopped       # stay alive so Coolify can exec the cron into it
+    command: >
+      sh -c "cp -n /app/users.yaml.example /config/users.yaml.example 2>/dev/null; sleep infinity"
+    env_file:
+      - path: .env
+        required: false            # Coolify injects env vars via UI, not a file
+    volumes:
+      - summarizer-config:/config  # named volume; seeded from image on first start
+      - summarizer-data:/data      # SQLite state, persists across runs/redeploys
+
+volumes:
+  summarizer-config:
+  summarizer-data:
