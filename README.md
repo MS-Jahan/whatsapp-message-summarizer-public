@@ -2,13 +2,47 @@
 
 > **Note:** Built as an internal office tool (reads configured WhatsApp accounts and emails digests). Publish only with stakeholder permission. Example phone numbers in this repo are **placeholders**, not real accounts.
 
-Headless service that emails a daily [Gemini](https://ai.google.dev/) summary of
-each WhatsApp conversation, pulling messages from a
-[`go-whatsapp-web-multidevice`](https://github.com/aldinokemal/go-whatsapp-web-multidevice)
-(GoWA) instance. It is multimodal (text + audio + images + small video), multi-user,
-and runs as a Coolify cron every 5 minutes. No UI.
+## Overview
 
-See the design spec in `docs/superpowers/specs/` for full details.
+Headless service that emails a daily Gemini summary of each WhatsApp conversation (via a GoWA / go-whatsapp-web-multidevice instance). Multimodal (text + audio + images + small video), multi-user, Coolify cron every 5 minutes. No UI.
+
+## Links
+
+- **Repo:** https://github.com/MS-Jahan/whatsapp-message-summarizer-public
+- **Live demo:** self-hosted only (no public web UI)
+- **Design docs:** `docs/superpowers/specs/`
+
+## Key Features
+
+- Daily scan after `SCAN_HOUR` (timezone-aware); one email digest per active chat
+- Gemini multimodal analysis (text, voice, image, video)
+- Multi-user `users.yaml` (hot-reload)
+- Retry / dead-letter with Telegram alerts
+- Resend or SMTP delivery; HTML + plain-text email bodies
+
+## Tech Stack
+
+**Python ≥3.12** · Gemini (`google-genai`) · httpx · PyYAML · Resend/SMTP · Markdown · SQLite · Docker / Coolify
+
+## Dependencies
+
+From `pyproject.toml`:
+
+- `httpx`, `google-genai`, `PyYAML`, `resend`, `Markdown`
+- Dev: `pytest`, `respx`, `freezegun`
+
+```bash
+pip install -e .
+# or: pip install httpx google-genai PyYAML resend Markdown
+```
+
+## How to run locally
+
+1. `cp .env.example .env` and fill values (GoWA, Gemini, mail, Telegram).
+2. `mkdir -p config && cp users.example.yaml config/users.yaml` — use placeholder phones only.
+3. Run via Docker Compose / Coolify cron, or the project entrypoint documented below.
+
+---
 
 ## How it works
 
